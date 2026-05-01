@@ -139,7 +139,7 @@ Computer Science at the University of Kentucky. Development was sponsored in
 part by a grant from the US National Science Foundation, #2145153.
 
 Tandem Tales is released under the
-[GNU General Public License version 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[GNU General Public License version 3.0](http://www.gnu.org/licenses/gpl-3.0.en.html)
 (GPL 3). This means you are free to share and modify this software, even for
 commercial purposes, as long as you give credit to the original creators and you
 also release your modifications under the GPL 3 license. See the license file
