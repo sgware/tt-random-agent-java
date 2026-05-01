@@ -18,7 +18,9 @@ keytool -importcert \
 screen -dmS server \
   java \
   -Djavax.net.ssl.keyStore="/opt/tt/tt-server.keystore" -Djavax.net.ssl.keyStorePassword="serverpassword" \
-  -jar /opt/tt/tt-server.jar
+  -jar /opt/tt/tt-server.jar \
+  -l /var/log/tt/log.txt \
+  -s /var/log/tt/sessions
 # Configure the server.
 screen -S server -p 0 -X stuff "add world /opt/tt/worlds/$world.json\n"
 screen -S server -p 0 -X stuff "add agent $name\n"

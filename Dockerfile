@@ -12,6 +12,7 @@ RUN apt-get install -y git
 
 # Download the latest Tandem Tales server and test client.
 RUN mkdir /opt/tt
+RUN mkdir /var/log/tt
 RUN git clone https://github.com/sgware/tt-server.git \
    && cp tt-server/jar/tt-server.jar /opt/tt \
    && cp -r tt-server/worlds /opt/tt
