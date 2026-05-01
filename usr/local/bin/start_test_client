@@ -1,5 +1,5 @@
 #!/bin/sh
-# Start the test client.
+# Start the Tandem Tales test client.
 java \
   -Djavax.net.ssl.trustStore="/opt/tt/tt-client.truststore" -Djavax.net.ssl.trustStorePassword="clientpassword" \
   -jar /opt/tt/tt-test-client.jar \

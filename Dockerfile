@@ -31,8 +31,9 @@ RUN rm -rf /tmp/*
 COPY usr/local/bin usr/local/bin
 RUN chmod +x /usr/local/bin/compile
 RUN chmod +x /usr/local/bin/start_test_server
-RUN chmod +x /usr/local/bin/start_client
+RUN chmod +x /usr/local/bin/start_this_client
 RUN chmod +x /usr/local/bin/start_test_client
+RUN chmod +x /usr/local/bin/start_clients
 RUN chmod +x /usr/local/bin/test
 RUN chmod +x /usr/local/bin/run
 

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Start this client in a detached screen.
+screen -dmS client start_this_client
+# Start the Tandem Tales test client.
+start_test_client
