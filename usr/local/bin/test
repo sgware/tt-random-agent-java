@@ -1,0 +1,8 @@
+#!/bin/sh
+# Start the server.
+start_test_server
+sleep 1
+# Start this client in a detached screen.
+screen -dmS client start_client
+# Start the test client.
+start_test_client

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Start the test client.
+java \
+  -Djavax.net.ssl.trustStore="/opt/tt/tt-client.truststore" -Djavax.net.ssl.trustStorePassword="clientpassword" \
+  -jar /opt/tt/tt-test-client.jar \
+  -world "$world" \
+  -player \
+  -partner "$name"

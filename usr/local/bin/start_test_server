@@ -1,0 +1,25 @@
+#!/bin/sh
+# Generate a self-signed public/private key pair.
+keytool -genkeypair \
+  -keystore /opt/tt/tt-server.keystore -storepass serverpassword \
+  -alias tandemtales \
+  -keyalg RSA -validity 365 -dname "CN=tandemtales.net, OU=, O=, L=, ST=, C="
+keytool -exportcert \
+  -keystore /opt/tt/tt-server.keystore -storepass serverpassword \
+  -alias tandemtales \
+  -rfc \
+  -file /etc/ssl/certs/tandemtales.pem
+keytool -importcert \
+  -keystore /opt/tt/tt-client.truststore -storepass clientpassword \
+  -alias tandemtales \
+  -file /etc/ssl/certs/tandemtales.pem \
+  -noprompt
+# Start the server in a detached screen.
+screen -dmS server \
+  java \
+  -Djavax.net.ssl.keyStore="/opt/tt/tt-server.keystore" -Djavax.net.ssl.keyStorePassword="serverpassword" \
+  -jar /opt/tt/tt-server.jar
+# Configure the server.
+screen -S server -p 0 -X stuff "add world /opt/tt/worlds/$world.json\n"
+screen -S server -p 0 -X stuff "add agent $name\n"
+screen -S server -p 0 -X stuff "set agent $name password $password\n"

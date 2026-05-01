@@ -1,0 +1,3 @@
+#!/bin/sh
+# Run the compiled client.
+java -cp "/opt/tt/*:/app/bin" "$main" -url host.docker.internal

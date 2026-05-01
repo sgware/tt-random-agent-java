@@ -1,0 +1,6 @@
+#!/bin/sh
+# Start this client.
+java \
+  -Djavax.net.ssl.trustStore="/opt/tt/tt-client.truststore" -Djavax.net.ssl.trustStorePassword="clientpassword" \
+  -cp "/opt/tt/*:/app/bin" \
+  "$main"
