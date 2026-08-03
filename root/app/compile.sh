@@ -1,3 +1,4 @@
 #!/bin/sh
+
 # Compile all Java source files in the 'src' directory to the 'bin' directory.
 javac -cp "/opt/tt/*" -d /app/bin $(find /app/src -name "*.java")

@@ -1,48 +1,65 @@
-# Start with Linux that has the JDK installed.
-FROM eclipse-temurin
+#===============================================================================
+# Tandem Tales Agent (Java) Docker Image
+# 
+# This Dockerfile defines a container (a lightweight virtual machine) that
+# includes an operating system, the Java Virtual Machine and Java Development
+# Kit, the Tandem Tales Java library, and the source code for a Tandem Tales
+# agent.
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+# Base Phase
+# The instructions in this section always run.
+#-------------------------------------------------------------------------------
+# Start with Linux that has Python already installed.
+FROM eclipse-temurin:26-jdk-resolute AS base
 
 # Update packages.
-RUN apt-get update
+RUN apt update
+# Git downloads the Tandem Tales Java library.
+RUN apt install -y git
 
-# Install GNU Screen so we can run the server and client as parallel processes.
-RUN apt-get install -y screen
-
-# Install Git so we can get the latest server and test client.
-RUN apt-get install -y git
-
-# Download the latest Tandem Tales server and test client.
-RUN mkdir /opt/tt
-RUN mkdir /var/log/tt
-RUN git clone https://github.com/sgware/tt-server.git \
-   && cp tt-server/jar/tt-server.jar /opt/tt \
-   && cp -r tt-server/worlds /opt/tt
-RUN git clone https://github.com/sgware/tt-test-client.git \
-   && cp tt-test-client/jar/tt-test-client.jar /opt/tt
-
-# Clean up unused programs and files.
-RUN apt-get purge -y git
-RUN apt-get autoremove -y
-RUN rm -rf /var/lib/apt/lists/*
-RUN rm -rf tt-server
-RUN rm -rf tt-test-client
+# Install the Tandem Tales Java library from GitHub.
+RUN git clone https://github.com/sgware/tt-server.git /tmp/tt-server
+RUN mkdir -p /opt/tt
+RUN cp /tmp/tt-server/build/jar/tt-server.jar /opt/tt/tt-server.jar
 RUN rm -rf /tmp/*
 
-# Copy shell scripts and make them executable.
-COPY usr/local/bin usr/local/bin
-RUN chmod +x /usr/local/bin/compile
-RUN chmod +x /usr/local/bin/start_test_server
-RUN chmod +x /usr/local/bin/start_this_client
-RUN chmod +x /usr/local/bin/start_test_client
-RUN chmod +x /usr/local/bin/start_clients
-RUN chmod +x /usr/local/bin/test
-RUN chmod +x /usr/local/bin/run
+# Uninstall software and clean up.
+RUN apt purge -y git
+RUN apt autoremove -y
+RUN apt clean
+RUN rm -rf /var/lib/apt/lists/*
 
-# Copy the project files into the image.
-COPY app /app
+# Copy the agent's files into the image.
+COPY ./root /
+
+# Set `/app` as the working directory.
 WORKDIR /app
 
-# Compile the client source.
-RUN ["compile"]
+# Compile the agent.
+RUN ./compile.sh
 
-# By default, starting a container runs the client.
-CMD ["run"]
+#-------------------------------------------------------------------------------
+# Development Phase
+# The instructions in this section only run if you build the image with
+# `--target dev`. Put instructions here that should only run when you are
+# testing and developing the image. This section assumes there is a container
+# named `tt-web` running as a test version of the Tandem Tales web server.
+#-------------------------------------------------------------------------------
+FROM base AS dev
+
+# Run the development version of the entrypoint script and keep the shell open.
+CMD ["sh", "-c", "trap 'exec bash' INT; /app/run.dev.sh; exec bash"]
+
+#-------------------------------------------------------------------------------
+# Production Phase
+# The instructions in this section run if you build the image with
+# `--target prod`. Since this is the last phase defined, these instructions will
+# run by default if you don't specify a target. Put instructions here that
+# should only run in the final, working version of your image.
+#-------------------------------------------------------------------------------
+FROM base AS prod
+
+# Run the production version of the entrypoint script.
+CMD ["sh", "-c", "/app/run.prod.sh"]

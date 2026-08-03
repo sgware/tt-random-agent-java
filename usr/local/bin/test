@@ -1,6 +1,0 @@
-#!/bin/sh
-# Start the Tandem Tales server.
-start_test_server
-sleep 1
-# Start this client and the Tandem Tales test client.
-start_clients
