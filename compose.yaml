@@ -28,7 +28,9 @@ services:
       # The public key from the server is in this shared volume.
       - certs:/etc/tt/certs
       # The agent's source code is here. You can edit it at run time!
-      - ./root/app/src:/app/src
+      - ./root/app:/app
+      # Prevent the compiled files from being part of the volume.
+      - /app/bin
     # Make this container interactive when it starts.
     stdin_open: true
     tty: true

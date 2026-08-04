@@ -17,8 +17,8 @@ The [Docker image](Dockerfile) in this project defines a
 lightweight virtual machine) that has the
 [Java Development Kit](https://www.oracle.com/java/technologies/downloads/), the
 [Tandem Tales Java library](https://github.com/sgware/tt-server), and
-[the code for this agent](root/app/src) already installed. Docker makes it easy
-to package your agent so others can easily run it without worrying about
+[the code for this agent](root/app/src/tt) already installed. Docker makes it
+easy to package your agent so others can easily run it without worrying about
 dependencies, versions numbers, etc.
 
 The [Docker Compose configuration](compose.yaml) makes it easy to run your agent
@@ -102,7 +102,7 @@ role="GAME_MASTER"
 ### Agent Code
 
 Now it's time to start changing the code. The random agent is pretty simple. In
-fact, it's [just three files](root/app/src)!
+fact, it's [just three files](root/app/src/tt)!
 
 The only method a Tandem Tales
 [client](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html)
@@ -121,12 +121,35 @@ in it, including:
 The `onChoice(Status)` method should return the integer index (starting at 0) of
 the choice from `status.choices` that you want to make.
 
-Change the `onChoice(Status)` method like this to print the `world` and `status`
-objects to file so you can see all the useful information in them:
+Change the `onChoice(Status)` method to print the `world` and `status` objects
+to file so you can see all the useful information in them. First, at the top of
+the file, add this:
 ```
-TODO
+import java.io.*;
+import com.google.gson.*;
 ```
-Don't forget to `import TODO` at the top of the file too.
+Then change `onChoice(Status)` to look like this:
+```
+@Override
+protected int onChoice(Status status) {
+	GsonBuilder builder = new GsonBuilder();
+	Message.configure(builder);
+	Gson gson = builder.setPrettyPrinting().create();
+	try(FileWriter writer = new FileWriter("world.json")) {
+		gson.toJson(getWorld(), writer);
+	}
+	catch(IOException exception) {
+		exception.printStackTrace();
+	}
+	try(FileWriter writer = new FileWriter("status.json")) {
+		gson.toJson(status, writer);
+	}
+	catch(IOException exception) {
+		exception.printStackTrace();
+	}
+	...
+}
+```
 
 Now take a look at
 [`RandomAgentFactory.java](root/app/src/tt/RandomAgentFactory.java). An agent
@@ -209,8 +232,8 @@ folder into the container's root `/` directory. So if you add the file
 
 You can stop Docker and re-start it every time you make changes to the code, but
 that gets tedious. When you launch this container using the Docker Compose
-commands shown above, it mounts the [`root/app/src`](root/app/src) directory as
-a [volume](https://docs.docker.com/engine/storage/volumes/). That means
+commands shown above, it mounts the [`root/app`](root/app) directory as a
+[volume](https://docs.docker.com/engine/storage/volumes/). That means
 everything in that directory is actually a local file on your computer. So you
 can edit `RandomAgent.java` while the container is running and the container
 sees it instantly. Similarly, any files that get created (like `status.json`
