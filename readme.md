@@ -58,8 +58,8 @@ Find the main agent constructor in
 [`RandomAgent.java`](root/app/src/tt/RandomAgent.java):
 ```
 private RandomAgent(String url, int port, Random random, long delay) {
-	super("random", null, null, null, url, port);
-	...
+    super("random", null, null, null, url, port);
+    ...
 }
 ```
 Change the string `"random"` to your agent's new name.
@@ -86,8 +86,8 @@ to play in the `tutorial` world and only in the `GAME_MASTER` role. You'll need
 to change your agent constructor to look something like this:
 ```
 private RandomAgent(String url, int port, Random random, long delay) {
-	super("barista", "tutorial", Role.GAME_MASTER, null, url, port);
-	...
+    super("barista", "tutorial", Role.GAME_MASTER, null, url, port);
+    ...
 }
 ```
 And don't forget to change the [`.env`](.env) file to match:
@@ -132,22 +132,22 @@ Then change `onChoice(Status)` to look like this:
 ```
 @Override
 protected int onChoice(Status status) {
-	GsonBuilder builder = new GsonBuilder();
-	Message.configure(builder);
-	Gson gson = builder.setPrettyPrinting().create();
-	try(FileWriter writer = new FileWriter("world.json")) {
-		gson.toJson(getWorld(), writer);
-	}
-	catch(IOException exception) {
-		exception.printStackTrace();
-	}
-	try(FileWriter writer = new FileWriter("status.json")) {
-		gson.toJson(status, writer);
-	}
-	catch(IOException exception) {
-		exception.printStackTrace();
-	}
-	...
+    GsonBuilder builder = new GsonBuilder();
+    Message.configure(builder);
+    Gson gson = builder.setPrettyPrinting().create();
+    try(FileWriter writer = new FileWriter("world.json")) {
+        gson.toJson(getWorld(), writer);
+    }
+    catch(IOException exception) {
+        exception.printStackTrace();
+    }
+    try(FileWriter writer = new FileWriter("status.json")) {
+        gson.toJson(status, writer);
+    }
+    catch(IOException exception) {
+        exception.printStackTrace();
+    }
+    ...
 }
 ```
 
@@ -166,7 +166,7 @@ method like this:
 ```
 @Override
 protected RandomAgent create() {
-	return new RandomAgent(url, port);
+    return new RandomAgent(url, port);
 }
 ```
 
@@ -175,7 +175,7 @@ In the `main(String[])` method of
 code that makes a new factory and runs it:
 ```
 try(RandomAgentFactory factory = new RandomAgentFactory(url, port)) {
-	factory.call();
+    factory.call();
 }
 ```
 
