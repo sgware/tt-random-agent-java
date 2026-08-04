@@ -110,16 +110,18 @@ The only method a Tandem Tales
 [`onChoice(Status)`](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/Client.html#onChoice(edu.uky.cs.nil.tt.world.Status)).
 Every time it is your agent's turn in the story, this method gets called. The
 `status` object has
-[a ton of useful information](https://sgware.github.io/tt/protocol.html#status-object)
+[a ton of useful information](https://sgware.github.io/tt-server/edu/uky/cs/nil/tt/world/Status.html)
 in it, including:
-- `status.history` has all the turns that have happened so far in the story.
-- `status.state` tells you the current value of all the world's variables.
-- `status.descriptions` has natural language descriptions of all the objects
-  your agent can currently see.
-- `status.choices` is a list of the things you can do next.
+- `status.getHistory()` has all the turns that have happened so far in the
+  story.
+- `status.getState()` tells you the current value of all the world's
+  variables.
+- `status.getDescriptions()` has natural language descriptions of all the
+  objects your agent can currently see.
+- `status.getChoices()` is a list of the things you can do next.
 
 The `onChoice(Status)` method should return the integer index (starting at 0) of
-the choice from `status.choices` that you want to make.
+the choice from `status.getChoices()` that you want to make.
 
 Change the `onChoice(Status)` method to print the `world` and `status` objects
 to file so you can see all the useful information in them. First, at the top of
