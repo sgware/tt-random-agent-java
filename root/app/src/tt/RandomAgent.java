@@ -3,14 +3,9 @@ package tt;
 import java.util.List;
 import java.util.Random;
 
-import edu.uky.cs.nil.tt.Client;
-import edu.uky.cs.nil.tt.Role;
-import edu.uky.cs.nil.tt.io.Connect;
-import edu.uky.cs.nil.tt.world.Ending;
-import edu.uky.cs.nil.tt.world.State;
-import edu.uky.cs.nil.tt.world.Status;
-import edu.uky.cs.nil.tt.world.Turn;
-import edu.uky.cs.nil.tt.world.World;
+import edu.uky.cs.nil.tt.*;
+import edu.uky.cs.nil.tt.io.*;
+import edu.uky.cs.nil.tt.world.*;
 
 /**
  * A Tandem Tales agent that makes random choices. This agent can play as either
