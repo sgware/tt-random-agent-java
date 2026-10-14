@@ -19,10 +19,10 @@ RUN apt update
 # Git downloads the Tandem Tales Java library.
 RUN apt install -y git
 
-# Install the Tandem Tales Java library from GitHub.
-RUN git clone https://github.com/sgware/tt-server.git /tmp/tt-server
+# Install the Tandem Tales Java Client library from GitHub.
+RUN git clone https://github.com/sgware/tt-client-java.git /tmp/tt-client-java
 RUN mkdir -p /opt/tt
-RUN cp /tmp/tt-server/build/jar/tt-server.jar /opt/tt/tt-server.jar
+RUN cp /tmp/tt-client-java/build/jar/tt-client-java.jar /opt/tt/tt-client-java.jar
 RUN rm -rf /tmp/*
 
 # Uninstall software and clean up.

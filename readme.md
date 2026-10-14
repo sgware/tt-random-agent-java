@@ -1,7 +1,7 @@
 # Tandem Tales Random Agent (Java)
 
 This repository provides a simple example of how to create a
-[Tandem Tales](https:sgware.github.io/tt) agent in Java that makes random
+[Tandem Tales](https://sgware.github.io/tt) agent in Java that makes random
 decisions according to this policy:
 
 - If this is a normal turn, the agent chooses to `PASS` control to its partner
