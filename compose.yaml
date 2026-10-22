@@ -60,10 +60,11 @@ services:
       - "9006:9006" # Tandem Tales (WebSockets)
     # Detect when the server has started.
     healthcheck:
-      test: ["CMD-SHELL", "grep -q \"Server now listening\" /var/log/tt/log.txt && exit 0 || exit 1"]
-      interval: 500ms
-      timeout: 1s
-      retries: 10
+      # On the first success, create a temp file to avoid repeating the health check.
+      test: ["CMD-SHELL", "[ -f /tmp/healthy ] || (/usr/local/bin/check_tt_running && touch /tmp/healthy)"]
+      interval: 500ms # Wait 0.5 seconds between checks.
+      timeout: 1s     # Fail if the script takes more than 1 second to run.
+      retries: 3      # This service is unhealthy if it fails 3 times.
 # Volumes shared between containers are defined here.
 volumes:
   # This volume contains the server's public key so it can be used by both server and agent.
