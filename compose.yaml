@@ -62,9 +62,9 @@ services:
     healthcheck:
       # On the first success, create a temp file to avoid repeating the health check.
       test: ["CMD-SHELL", "[ -f /tmp/healthy ] || (/usr/local/bin/check_tt_running && touch /tmp/healthy)"]
-      interval: 500ms # Wait 0.5 seconds between checks.
-      timeout: 1s     # Fail if the script takes more than 1 second to run.
-      retries: 3      # This service is unhealthy if it fails 3 times.
+      interval: 1s # Wait 1 second between checks.
+      timeout: 1s  # Fail if the script takes more than 1 second to run.
+      retries: 10  # This service is unhealthy if it fails 10 times.
 # Volumes shared between containers are defined here.
 volumes:
   # This volume contains the server's public key so it can be used by both server and agent.
